@@ -1,56 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { IceCream } from "react-kawaii";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCatMood, MOODS } from "./features/mood/moodSlice";
+
+import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
+  const currentMood = useSelector((state:any) => state.mood);
+
+  const handleMoodUpdate = (evt: any) => {
+    const mood = evt.target.dataset.type;
+    dispatch(updateCatMood(mood));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
+      <IceCream size={320} mood={currentMood} color="#FDA7DC" />
+      <section>
+        {Object.values(MOODS).map((mood) => (
+          <button
+            data-type={mood}
+            key={mood}
+            className={`${currentMood === mood ? "selected" : ""}`}
+            onClick={handleMoodUpdate}
           >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+            {mood}
+          </button>
+        ))}
+      </section>
     </div>
   );
 }
